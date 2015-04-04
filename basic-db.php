@@ -69,6 +69,21 @@ class Basic-db EXTENDS ADODB
         }else
             return false;
     }
+    function get_sql_between_date($name,$start_date='',$end_date=''){
+        $start_date = ($start_date=='' && isset($_GET['start']))?$_GET['start']:$start_date;
+        $end_date   = ($end_date=='' && isset($_GET['end']))    ?$_GET['end']:$end_date;
+        if(isset($start_date) && $start_date!=''){
+           $start = $this->inputDate2Ad($start_date);
+        }else{
+           $start = date('Y-m-d');
+        }
+        if(isset($end_date) && $end_date!=''){
+           $end = $this->inputDate2Ad($end_date);
+        }else{
+           $end = '9999-12-31';
+        }
+        return "and date($name) BETWEEN date('$start') and date('$end')";
+    }
     function show($arr){
         if($this->isshow == 1){
             echo '<pre>';
