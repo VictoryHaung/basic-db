@@ -121,13 +121,16 @@ class DY_DBA
         $page = (($page==1)?1:$page - 1);
       
         $min = ($page==1)?1:$page * $num_limit + 1;
-        $sql = "with tmp_minus as (
-SELECT * FROM $tab WHERE ROWNUM < $max       and $where
-MINUS 
-SELECT * FROM $tab WHERE ROWNUM < $min and $where
-)
-select * from tmp_minus 
-$order";
+        $sql = "SELECT *
+                FROM
+                  (SELECT A.$select,
+                    rownum r
+                  FROM
+                    ( SELECT $select FROM $tab $order
+                    ) A
+                  WHERE rownum <= $max and $where
+                  ) B
+                WHERE r >= $min ";
         $rs = oci_parse($this->connect,$this->show_sql($sql));
         oci_execute($rs);
         if($rs) {
