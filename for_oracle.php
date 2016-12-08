@@ -123,7 +123,7 @@ class DY_DBA
         $min = ($page==1)?1:$page * $num_limit + 1;
         $sql = "SELECT *
                 FROM
-                  (SELECT A.$select,
+                  (SELECT A.*,
                     rownum r
                   FROM
                     ( SELECT $select FROM $tab $order
