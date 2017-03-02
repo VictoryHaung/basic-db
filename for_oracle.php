@@ -26,7 +26,7 @@ class DY_DBA
         return  $start.$field_name.$end;
     }
     function escapeString($str){
-        return addslashes($str);
+        return " q'$".$str."$'";
     }
     //新增資料-data：arr(key=>value)
     function insert_implode($data,$table_name){
